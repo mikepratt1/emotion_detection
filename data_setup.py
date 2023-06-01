@@ -16,12 +16,14 @@ def create_dataloaders(train_dir, test_dir, transform, batch_size):
     class_weight = torch.Tensor([len(train_dataset) / c for c in pd.Series(train_distribution).sort_index()])
 
     sample_weight = [0]*len(train_dataset)
+    print("[INFO] Creating sampler" )
     for idx, (img, label) in enumerate(train_dataset):
         weight = class_weight[label]
         sample_weight[idx] = weight
 
     sampler = torch.utils.data.WeightedRandomSampler(weights=sample_weight, num_samples=len(train_dataset), replacement=True)
-
+    print("[INFO] Sampler created")
+    
     # Get class names
     class_names = train_dataset.classes
 
@@ -29,7 +31,7 @@ def create_dataloaders(train_dir, test_dir, transform, batch_size):
                                               batch_size=batch_size,
                                               shuffle=False)
     train_dataloader = torch.utils.data.DataLoader(train_dataset,
-                                              batch_size=batch_size,
-                                              sampler=sampler)
+                                              batch_size=batch_size)
+                                              #sampler=sampler)
     
     return train_dataloader, test_dataloader, class_names
