@@ -41,6 +41,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # Start the train/ test loop
 engine.train(model=model,
              train_dataloader=train_dataloader,
+             test_dataloader=test_dataloader,
              loss_fn=loss_fn,
              optimizer=optimizer,
              epochs=epochs,
